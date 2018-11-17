@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.UserDao">
+
+    <resultMap type="com.cn.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="uName" column="u_name" jdbcType="VARCHAR"/>
+        <result property="uPassword" column="u_password" jdbcType="VARCHAR"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="uQq" column="u_qq" jdbcType="VARCHAR"/>
+        <result property="uEmail" column="u_email" jdbcType="VARCHAR"/>
+        <result property="uPhone" column="u_phone" jdbcType="VARCHAR"/>
+        <result property="uRegister" column="u_register" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          id, u_name, u_password, role_id, u_qq, u_email, u_phone, u_register
+        from project.user
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          id, u_name, u_password, role_id, u_qq, u_email, u_phone, u_register
+        from project.user
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="UserMap">
+        select * from project.user
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+          id, u_name, u_password, role_id, u_qq, u_email, u_phone, u_register
+        from project.user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="uName != null and uName != ''">
+                and u_name = #{uName}
+            </if>
+            <if test="uPassword != null and uPassword != ''">
+                and u_password = #{uPassword}
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+            <if test="uQq != null and uQq != ''">
+                and u_qq = #{uQq}
+            </if>
+            <if test="uEmail != null and uEmail != ''">
+                and u_email = #{uEmail}
+            </if>
+            <if test="uPhone != null and uPhone != ''">
+                and u_phone = #{uPhone}
+            </if>
+            <if test="uRegister != null">
+                and u_register = #{uRegister}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.user(u_name, u_password, role_id, u_qq, u_email, u_phone, u_register)
+        values (#{uName}, #{uPassword}, #{roleId}, #{uQq}, #{uEmail}, #{uPhone}, #{uRegister})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.user
+        <set>
+            <if test="uName != null and uName != ''">
+                u_name = #{uName},
+            </if>
+            <if test="uPassword != null and uPassword != ''">
+                u_password = #{uPassword},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            <if test="uQq != null and uQq != ''">
+                u_qq = #{uQq},
+            </if>
+            <if test="uEmail != null and uEmail != ''">
+                u_email = #{uEmail},
+            </if>
+            <if test="uPhone != null and uPhone != ''">
+                u_phone = #{uPhone},
+            </if>
+            <if test="uRegister != null">
+                u_register = #{uRegister},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.user where id = #{id}
+    </delete>
+
+</mapper>
