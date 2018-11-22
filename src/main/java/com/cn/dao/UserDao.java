@@ -68,4 +68,24 @@ public interface UserDao {
      */
     int deleteById(Integer id);
 
+    /**
+     * 登录操作
+     * @param phone 手机号
+     * @return 对象
+     */
+    User login(String phone);
+
+    /**
+     * 检查手机号
+     * @param phone 手机号
+     * @return 对象
+     */
+    User checkPhone(String phone);
+
+    /**
+     * 检查用户名
+     * @param username 用户名
+     * @return 对象
+     */
+    User checkUsername(String username);
 }

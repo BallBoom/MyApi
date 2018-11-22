@@ -93,4 +93,17 @@ public class User implements Serializable {
         this.uRegister = uRegister;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", uName='" + uName + '\'' +
+                ", uPassword='" + uPassword + '\'' +
+                ", roleId=" + roleId +
+                ", uQq='" + uQq + '\'' +
+                ", uEmail='" + uEmail + '\'' +
+                ", uPhone='" + uPhone + '\'' +
+                ", uRegister=" + uRegister +
+                '}';
+    }
 }

@@ -107,4 +107,24 @@
         delete from project.user where id = #{id}
     </delete>
 
+    <!--登录-->
+    <select id="login" resultMap="UserMap" >
+        select u_name,u_phone,u_password,role_id
+         from project.user
+         where u_phone=#{uPhone}
+    </select>
+
+    <!--检查手机号-->
+    <select id="checkPhone" resultMap="UserMap" parameterType="String">
+        select *
+        from project.user
+         where u_phone=#{uPhone};
+    </select>
+
+    <!--检查用户名-->
+    <select id="checkUsername" resultMap="UserMap" parameterType="String">
+        select *
+        from project.user
+         where u_name=#{uName};
+    </select>
 </mapper>

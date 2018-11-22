@@ -85,4 +85,53 @@ public class UserServiceImpl implements UserService {
     public boolean deleteById(Integer id) {
         return this.userDao.deleteById(id) > 0;
     }
+
+    /**
+     * 登录
+     * @param phone 手机号
+     * @param pw 密码
+     * @return 登录信息
+     */
+    @Override
+    public int login(String phone, String pw) {
+        User user= this.userDao.login(phone);
+        System.out.println(user.toString());
+        boolean truePhone=phone.equals(user.getUPhone());
+        boolean truePw=pw.equals(user.getUPassword());
+        System.out.println(truePhone+","+truePw);
+        if(user==null){
+            return 0;
+        }else if (truePhone && truePw && user.getRoleId()==1){
+            return 1;
+        }else if(truePhone && truePw && user.getRoleId()==2){
+            return 2;
+        }else{
+            return -1;
+        }
+
+    }
+
+    /**
+     * 检查手机号
+     * @param phone 手机号
+     * @return 是否正确
+     */
+    @Override
+    public boolean checkPhone(String phone) {
+        User user=this.userDao.checkPhone(phone);
+        if(user!=null){ return true;}
+        return false;
+    }
+
+    /**
+     * 检查用户名
+     * @param username 用户名
+     * @return 是否正确
+     */
+    @Override
+    public boolean checkUsername(String username) {
+        User user=this.userDao.checkUsername(username);
+        if(user!=null){ return true; }
+        return false;
+    }
 }

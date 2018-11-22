@@ -59,4 +59,26 @@ public interface UserService {
      */
     boolean deleteById(Integer id);
 
+    /**
+     * 登录操作
+     * @param phone 手机号
+     * @param pw 密码
+     * @return 对象
+     */
+    int login(String phone,String pw);
+
+    /**
+     * 检查手机号
+     * @param phone 手机号
+     * @return 对象
+     */
+    boolean checkPhone(String phone);
+
+    /**
+     * 检查用户名
+     * @param username 用户名
+     * @return 对象
+     */
+    boolean checkUsername(String username);
+
 }

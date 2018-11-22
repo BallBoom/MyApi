@@ -17,6 +17,7 @@ import java.util.Date;
  * @author kai
  * @since 2018-11-17 18:05:05
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "user",produces = "text/html;charset=utf-8")
 public class UserController {
@@ -35,8 +36,7 @@ public class UserController {
     @RequestMapping("selectOne/{id}")
     public String selectOne(@PathVariable Integer id) {
         Gson gson=new Gson();
-        String result=gson.toJson(this.userService.queryById(id));
-        return result;
+        return gson.toJson(this.userService.queryById(id));
     }
     
     
@@ -48,8 +48,7 @@ public class UserController {
     @RequestMapping("all")
     public String all() {
         Gson gson=new Gson();
-        String result=gson.toJson(this.userService.all());
-        return result;
+        return gson.toJson(this.userService.all());
     }
 
     /**
@@ -57,7 +56,7 @@ public class UserController {
      * @param request 表单提交数据
      * @return 注册信息
      */
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @RequestMapping(value = "register",method = RequestMethod.POST)
     public String insertUser(HttpServletRequest request){
         User user=new User();
         user.setUName(request.getParameter("uName"));
@@ -80,4 +79,77 @@ public class UserController {
         }
     }
 
+    /**
+     * 登录
+     * @param phone 手机号
+     * @param pw 密码
+     * @return 登录信息
+     * 企业 1
+     * 学生 2
+     * 密码错误 -1
+     * 用户不存在 0
+     */
+    @RequestMapping(value = "login",method = RequestMethod.POST)
+    public String login(String phone,String pw,HttpServletRequest request){
+//        用户查询信息
+        int i=this.userService.login(phone,pw);
+        JSONObject jsonObject=new JSONObject();
+        System.out.println(i);
+        if(i==0){
+            jsonObject.put("msg",0);
+            return jsonObject.toString();
+        }else if(i==-1){
+            jsonObject.put("msg",-1);
+            return jsonObject.toString();
+        }else if(i==1){
+            jsonObject.put("msg",1);
+            request.setAttribute("phone",phone);
+            return jsonObject.toString();
+        }else{
+            jsonObject.put("msg",2);
+            request.setAttribute("phone",phone);
+            return jsonObject.toString();
+        }
+    }
+
+    /**
+     * 检查手机号
+     * @param phone 手机号
+     * @return 信息
+     * 手机号已被注册 1
+     * 没被注册 0
+     */
+    @RequestMapping(value = "checkPhone",method = RequestMethod.GET)
+    public String phone(String phone){
+        boolean Phone=this.userService.checkPhone(phone);
+        JSONObject jsonObject=new JSONObject();
+        if(Phone){
+            jsonObject.put("msg",1);
+            return jsonObject.toString();
+        }else {
+            jsonObject.put("msg",0);
+            return jsonObject.toString();
+        }
+
+    }
+
+    /**
+     * 检查用户名
+     * @param username 用户名
+     * @return
+     * 用户名已被注册 1
+     * 没被注册 0
+     */
+    @RequestMapping(value = "checkName",method = RequestMethod.GET)
+    public String username(String username){
+        boolean Username=this.userService.checkUsername(username);
+        JSONObject jsonObject=new JSONObject();
+        if(Username){
+            jsonObject.put("msg",1);
+            return jsonObject.toString();
+        }else{
+            jsonObject.put("msg",0);
+            return jsonObject.toString();
+        }
+    }
 }
