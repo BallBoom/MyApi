@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.StudentInfoDao">
+
+    <resultMap type="com.cn.entity.StudentInfo" id="StudentInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="uPhone" column="u_phone" jdbcType="VARCHAR"/>
+        <result property="sId" column="s_id" jdbcType="VARCHAR"/>
+        <result property="sName" column="s_name" jdbcType="VARCHAR"/>
+        <result property="sSex" column="s_sex" jdbcType="VARCHAR"/>
+        <result property="sSchool" column="s_school" jdbcType="VARCHAR"/>
+        <result property="sProfession" column="s_profession" jdbcType="VARCHAR"/>
+        <result property="sClass" column="s_class" jdbcType="VARCHAR"/>
+        <result property="sRemarks" column="s_remarks" jdbcType="VARCHAR"/>
+        <result property="sStatus" column="s_status" jdbcType="VARCHAR"/>
+        <result property="sExpertise" column="s_expertise" jdbcType="VARCHAR"/>
+        <result property="sProve" column="s_prove" jdbcType="VARCHAR"/>
+        <result property="flag" column="flag" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StudentInfoMap">
+        select
+          id, u_phone, s_id, s_name, s_sex, s_school, s_profession, s_class, s_remarks, s_status, s_expertise,s_prove, flag
+        from project.student_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StudentInfoMap">
+        select
+          id, u_phone, s_id, s_name, s_sex, s_school, s_profession, s_class, s_remarks, s_status, s_expertise,s_prove, flag
+        from project.student_info
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="StudentInfoMap">
+        select * from project.student_info
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="StudentInfoMap">
+        select
+          id, u_phone, s_id, s_name, s_sex, s_school, s_profession, s_class, s_remarks, s_status, s_expertise, flag
+        from project.student_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="uPhone != null and uPhone != ''">
+                and u_phone = #{uPhone}
+            </if>
+            <if test="sId != null and sId != ''">
+                and s_id = #{sId}
+            </if>
+            <if test="sName != null and sName != ''">
+                and s_name = #{sName}
+            </if>
+            <if test="sSex != null and sSex != ''">
+                and s_sex = #{sSex}
+            </if>
+            <if test="sSchool != null and sSchool != ''">
+                and s_school = #{sSchool}
+            </if>
+            <if test="sProfession != null and sProfession != ''">
+                and s_profession = #{sProfession}
+            </if>
+            <if test="sClass != null and sClass != ''">
+                and s_class = #{sClass}
+            </if>
+            <if test="sRemarks != null and sRemarks != ''">
+                and s_remarks = #{sRemarks}
+            </if>
+            <if test="sStatus != null and sStatus != ''">
+                and s_status = #{sStatus}
+            </if>
+            <if test="sExpertise != null and sExpertise != ''">
+                and s_expertise = #{sExpertise}
+            </if>
+            <if test="flag != null">
+                and flag = #{flag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.student_info(u_phone, s_id, s_name, s_sex, s_school, s_profession, s_class, s_remarks, s_status, s_expertise,s_prove, flag)
+        values (#{uPhone}, #{sId}, #{sName}, #{sSex}, #{sSchool}, #{sProfession}, #{sClass}, #{sRemarks}, #{sStatus}, #{sExpertise},#{sProve}, #{flag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.student_info
+        <set>
+            <if test="uPhone != null and uPhone != ''">
+                u_phone = #{uPhone},
+            </if>
+            <if test="sId != null and sId != ''">
+                s_id = #{sId},
+            </if>
+            <if test="sName != null and sName != ''">
+                s_name = #{sName},
+            </if>
+            <if test="sSex != null and sSex != ''">
+                s_sex = #{sSex},
+            </if>
+            <if test="sSchool != null and sSchool != ''">
+                s_school = #{sSchool},
+            </if>
+            <if test="sProfession != null and sProfession != ''">
+                s_profession = #{sProfession},
+            </if>
+            <if test="sClass != null and sClass != ''">
+                s_class = #{sClass},
+            </if>
+            <if test="sRemarks != null and sRemarks != ''">
+                s_remarks = #{sRemarks},
+            </if>
+            <if test="sStatus != null and sStatus != ''">
+                s_status = #{sStatus},
+            </if>
+            <if test="sExpertise != null and sExpertise != ''">
+                s_expertise = #{sExpertise},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.student_info where id = #{id}
+    </delete>
+
+    <!--通过手机查询是否已注册学生信息-->
+    <select id="queryStudent" resultMap="StudentInfoMap" parameterType="String">
+        select * from project.student_info
+        where u_phone=#{uPhone}
+    </select>
+
+</mapper>

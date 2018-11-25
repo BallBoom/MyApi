@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.CompanyInfoDao">
+
+    <resultMap type="com.cn.entity.CompanyInfo" id="CompanyInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="uPhone" column="u_phone" jdbcType="VARCHAR"/>
+        <result property="cId" column="c_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="cContact" column="c_contact" jdbcType="VARCHAR"/>
+        <result property="cPhone" column="c_phone" jdbcType="VARCHAR"/>
+        <result property="cEmail" column="c_email" jdbcType="VARCHAR"/>
+        <result property="cQq" column="c_qq" jdbcType="VARCHAR"/>
+        <result property="cBusiness" column="c_business" jdbcType="VARCHAR"/>
+        <result property="cTechnology" column="c_technology" jdbcType="VARCHAR"/>
+        <result property="cProduct" column="c_product" jdbcType="VARCHAR"/>
+        <result property="cAddress" column="c_address" jdbcType="VARCHAR"/>
+        <result property="cPostCode" column="c_post_code" jdbcType="VARCHAR"/>
+        <result property="cPhoto" column="c_photo" jdbcType="VARCHAR"/>
+        <result property="cWeb" column="c_web" jdbcType="VARCHAR"/>
+        <result property="cPlant" column="c_plant" jdbcType="VARCHAR"/>
+        <result property="flag" column="flag" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CompanyInfoMap">
+        select
+          id, u_phone, c_id, c_name, c_contact, c_phone, c_email, c_qq, c_business, c_technology, c_product, c_address, c_post_code, c_photo, c_web, c_plant, flag
+        from project.company_info
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CompanyInfoMap">
+        select
+          id, u_phone, c_id, c_name, c_contact, c_phone, c_email, c_qq, c_business, c_technology, c_product, c_address, c_post_code, c_photo, c_web, c_plant, flag
+        from project.company_info
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="CompanyInfoMap">
+        select * from project.company_info
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CompanyInfoMap">
+        select
+          id, u_phone, c_id, c_name, c_contact, c_phone, c_email, c_qq, c_business, c_technology, c_product, c_address, c_post_code, c_photo, c_web, c_plant, flag
+        from project.company_info
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="uPhone != null and uPhone != ''">
+                and u_phone = #{uPhone}
+            </if>
+            <if test="cId != null and cId != ''">
+                and c_id = #{cId}
+            </if>
+            <if test="cName != null and cName != ''">
+                and c_name = #{cName}
+            </if>
+            <if test="cContact != null and cContact != ''">
+                and c_contact = #{cContact}
+            </if>
+            <if test="cPhone != null and cPhone != ''">
+                and c_phone = #{cPhone}
+            </if>
+            <if test="cEmail != null and cEmail != ''">
+                and c_email = #{cEmail}
+            </if>
+            <if test="cQq != null and cQq != ''">
+                and c_qq = #{cQq}
+            </if>
+            <if test="cBusiness != null and cBusiness != ''">
+                and c_business = #{cBusiness}
+            </if>
+            <if test="cTechnology != null and cTechnology != ''">
+                and c_technology = #{cTechnology}
+            </if>
+            <if test="cProduct != null and cProduct != ''">
+                and c_product = #{cProduct}
+            </if>
+            <if test="cAddress != null and cAddress != ''">
+                and c_address = #{cAddress}
+            </if>
+            <if test="cPostCode != null and cPostCode != ''">
+                and c_post_code = #{cPostCode}
+            </if>
+            <if test="cPhoto != null and cPhoto != ''">
+                and c_photo = #{cPhoto}
+            </if>
+            <if test="cWeb != null and cWeb != ''">
+                and c_web = #{cWeb}
+            </if>
+            <if test="cPlant != null and cPlant != ''">
+                and c_plant = #{cPlant}
+            </if>
+            <if test="flag != null">
+                and flag = #{flag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.company_info(u_phone, c_id, c_name, c_contact, c_phone, c_email, c_qq, c_business, c_technology, c_product, c_address, c_post_code, c_photo, c_web, c_plant, flag)
+        values (#{uPhone}, #{cId}, #{cName}, #{cContact}, #{cPhone}, #{cEmail}, #{cQq}, #{cBusiness}, #{cTechnology}, #{cProduct}, #{cAddress}, #{cPostCode}, #{cPhoto}, #{cWeb}, #{cPlant}, #{flag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.company_info
+        <set>
+            <if test="uPhone != null and uPhone != ''">
+                u_phone = #{uPhone},
+            </if>
+            <if test="cId != null and cId != ''">
+                c_id = #{cId},
+            </if>
+            <if test="cName != null and cName != ''">
+                c_name = #{cName},
+            </if>
+            <if test="cContact != null and cContact != ''">
+                c_contact = #{cContact},
+            </if>
+            <if test="cPhone != null and cPhone != ''">
+                c_phone = #{cPhone},
+            </if>
+            <if test="cEmail != null and cEmail != ''">
+                c_email = #{cEmail},
+            </if>
+            <if test="cQq != null and cQq != ''">
+                c_qq = #{cQq},
+            </if>
+            <if test="cBusiness != null and cBusiness != ''">
+                c_business = #{cBusiness},
+            </if>
+            <if test="cTechnology != null and cTechnology != ''">
+                c_technology = #{cTechnology},
+            </if>
+            <if test="cProduct != null and cProduct != ''">
+                c_product = #{cProduct},
+            </if>
+            <if test="cAddress != null and cAddress != ''">
+                c_address = #{cAddress},
+            </if>
+            <if test="cPostCode != null and cPostCode != ''">
+                c_post_code = #{cPostCode},
+            </if>
+            <if test="cPhoto != null and cPhoto != ''">
+                c_photo = #{cPhoto},
+            </if>
+            <if test="cWeb != null and cWeb != ''">
+                c_web = #{cWeb},
+            </if>
+            <if test="cPlant != null and cPlant != ''">
+                c_plant = #{cPlant},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.company_info where id = #{id}
+    </delete>
+
+    <!--通过手机号查询企业的信息情况-->
+    <select id="queryCompany" resultMap="CompanyInfoMap">
+        select * from project.company_info
+         where u_phone=#{uPhone}
+    </select>
+
+</mapper>
