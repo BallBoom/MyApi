@@ -1216,7 +1216,7 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="234" name="c_flag">
+    <column id="291" parent="234" name="flag">
       <Position>17</Position>
       <DataType>bit(1)|0s</DataType>
       <NotNull>1</NotNull>
@@ -1663,79 +1663,92 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="366" parent="241" name="sid">
+    <column id="366" parent="241" name="s_prove">
+      <Position>12</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="367" parent="241" name="flag">
+      <Position>13</Position>
+      <DataType>bit(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>b&apos;0&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="368" parent="241" name="sid">
       <ColNames>s_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="367" parent="241" name="PRIMARY">
+    <key id="369" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="368" parent="241" name="sid">
+    <key id="370" parent="241" name="sid">
       <ColNames>s_id</ColNames>
       <UnderlyingIndexName>sid</UnderlyingIndexName>
     </key>
-    <column id="369" parent="242" name="id">
+    <column id="371" parent="242" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="370" parent="242" name="u_name">
+    <column id="372" parent="242" name="u_name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="371" parent="242" name="u_password">
+    <column id="373" parent="242" name="u_password">
       <Position>3</Position>
       <DataType>varchar(16)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="372" parent="242" name="role_id">
+    <column id="374" parent="242" name="role_id">
       <Position>4</Position>
       <DataType>int(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="373" parent="242" name="u_qq">
+    <column id="375" parent="242" name="u_qq">
       <Position>5</Position>
       <DataType>varchar(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="374" parent="242" name="u_email">
+    <column id="376" parent="242" name="u_email">
       <Position>6</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="375" parent="242" name="u_phone">
+    <column id="377" parent="242" name="u_phone">
       <Position>7</Position>
       <DataType>varchar(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="376" parent="242" name="u_register">
+    <column id="378" parent="242" name="u_register">
       <Position>8</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="377" parent="242" name="phone">
+    <index id="379" parent="242" name="phone">
       <ColNames>u_phone</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="378" parent="242" name="PRIMARY">
+    <key id="380" parent="242" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="379" parent="242" name="phone">
+    <key id="381" parent="242" name="phone">
       <ColNames>u_phone</ColNames>
       <UnderlyingIndexName>phone</UnderlyingIndexName>
     </key>

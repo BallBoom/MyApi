@@ -6,6 +6,9 @@ import com.cn.service.UserService;
 import com.google.gson.JsonObject;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -33,7 +36,7 @@ public class UserController {
      * @param id 主键
      * @return 单条数据
      */
-    @RequestMapping("selectOne/{id}")
+    @RequestMapping("/{id}")
     public String selectOne(@PathVariable Integer id) {
         Gson gson=new Gson();
         return gson.toJson(this.userService.queryById(id));
@@ -45,7 +48,7 @@ public class UserController {
      *
      * @return 全部数据
      */
-    @RequestMapping("all")
+    @RequestMapping("/")
     public String all() {
         Gson gson=new Gson();
         return gson.toJson(this.userService.all());
@@ -55,12 +58,18 @@ public class UserController {
      * 注册操作
      * @param request 表单提交数据
      * @return 注册信息
+     * 注册成功 1
+     * 注册失败 0
      */
     @RequestMapping(value = "register",method = RequestMethod.POST)
-    public String insertUser(HttpServletRequest request){
+    public String insertUser(HttpServletRequest request ){
         User user=new User();
         user.setUName(request.getParameter("uName"));
-        user.setUPassword(request.getParameter("uPassword"));
+//        使对密码进行编码
+        BASE64Encoder base64Encoder=new BASE64Encoder();
+        String afterPw=base64Encoder.encode(
+                (request.getParameter("uPassword")).getBytes());
+        user.setUPassword(afterPw);
         user.setRoleId(Integer.parseInt(request.getParameter("roleId")));
         user.setUPhone(request.getParameter("uPhone"));
         user.setUQq(request.getParameter("uQq"));
@@ -94,7 +103,6 @@ public class UserController {
 //        用户查询信息
         int i=this.userService.login(phone,pw);
         JSONObject jsonObject=new JSONObject();
-        System.out.println(i);
         if(i==0){
             jsonObject.put("msg",0);
             return jsonObject.toString();

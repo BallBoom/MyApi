@@ -116,7 +116,7 @@
 
     <!--检查手机号-->
     <select id="checkPhone" resultMap="UserMap" parameterType="String">
-        select *
+        select u_phone
         from project.user
          where u_phone=#{uPhone};
     </select>
@@ -127,4 +127,6 @@
         from project.user
          where u_name=#{uName};
     </select>
+
+
 </mapper>
