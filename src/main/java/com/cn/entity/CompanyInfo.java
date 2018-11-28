@@ -182,4 +182,26 @@ public class CompanyInfo implements Serializable {
         this.flag = flag;
     }
 
+    @Override
+    public String toString() {
+        return "CompanyInfo{" +
+                "id=" + id +
+                ", uPhone='" + uPhone + '\'' +
+                ", cId='" + cId + '\'' +
+                ", cName='" + cName + '\'' +
+                ", cContact='" + cContact + '\'' +
+                ", cPhone='" + cPhone + '\'' +
+                ", cEmail='" + cEmail + '\'' +
+                ", cQq='" + cQq + '\'' +
+                ", cBusiness='" + cBusiness + '\'' +
+                ", cTechnology='" + cTechnology + '\'' +
+                ", cProduct='" + cProduct + '\'' +
+                ", cAddress='" + cAddress + '\'' +
+                ", cPostCode='" + cPostCode + '\'' +
+                ", cPhoto='" + cPhoto + '\'' +
+                ", cWeb='" + cWeb + '\'' +
+                ", cPlant='" + cPlant + '\'' +
+                ", flag=" + flag +
+                '}';
+    }
 }

@@ -3,10 +3,15 @@ package com.cn.service.impl;
 import com.cn.entity.CompanyInfo;
 import com.cn.dao.CompanyInfoDao;
 import com.cn.service.CompanyInfoService;
+import org.springframework.core.Constants;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * (CompanyInfo)表服务实现类
@@ -61,6 +66,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
      */
     @Override
     public CompanyInfo insert(CompanyInfo companyInfo) {
+//        String filename=FileUpload.getFileName(file);
+//        companyInfo.setCPhoto(filename);
+//        System.out.println(companyInfo.toString());
         this.companyInfoDao.insert(companyInfo);
         return companyInfo;
     }

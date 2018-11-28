@@ -3,10 +3,16 @@ package com.cn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.entity.StudentInfo;
 import com.cn.service.StudentInfoService;
+import com.cn.utils.UploadUtil;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * (StudentInfo)表控制层
@@ -49,21 +55,19 @@ public class StudentInfoController {
     }
 
     /**
-     *
+     * 通过手机号查询学生
      * @param phone 手机号 从session中获取
      * @return 学生信息
      * 存在 1，则获取学生信息 student
      * 不存在 0，则补全信息
      */
-    @RequestMapping(value = "Student",method = RequestMethod.GET)
+    @RequestMapping(value = "student",method = RequestMethod.GET)
     public String queryStudnet(@RequestParam String phone){
         StudentInfo studentInfo=this.studentInfoService.queryStudent(phone);
         JSONObject jsonObject=new JSONObject();
-        Gson gson=new Gson();
         if(studentInfo!=null){
-
             jsonObject.put("msg",1);
-            jsonObject.put("student",studentInfo);
+            jsonObject.put("data",studentInfo);
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",0);
@@ -76,11 +80,11 @@ public class StudentInfoController {
      * 学生完善信息
      * @param request 表单提交
      * @return 插入结果
-     * 成功 1
+     * 成功 1 返回数据
      * 失败 0
      */
-    @RequestMapping(value = "Student",method = RequestMethod.POST)
-    public String insertStudent(HttpServletRequest request){
+    @RequestMapping(value = "add",method = RequestMethod.POST)
+    public String insertStudent(HttpServletRequest request, @RequestParam("sProve") MultipartFile file) throws IOException {
         StudentInfo studentInfo=new StudentInfo();
         studentInfo.setUPhone(request.getParameter("uPhone"));
         studentInfo.setSId(request.getParameter("sId"));
@@ -92,11 +96,15 @@ public class StudentInfoController {
         studentInfo.setSRemarks(request.getParameter("sRemarks"));
         studentInfo.setSStatus(request.getParameter("sStatus"));
         studentInfo.setSExpertise(request.getParameter("sExpertise"));
-        studentInfo.setsProve(request.getParameter("sProve"));
-        int i=this.studentInfoService.insert(studentInfo);
+        // 保存图片
+        String imgName= UploadUtil.imgUpload(file);
+        studentInfo.setsProve(imgName);
+        System.out.println(imgName);
+        StudentInfo studentInfo1=this.studentInfoService.insert(studentInfo);
         JSONObject jsonObject=new JSONObject();
-        if(i>0){
+        if(studentInfo1!=null){
             jsonObject.put("msg",1);
+            jsonObject.put("data",studentInfo1);
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",0);

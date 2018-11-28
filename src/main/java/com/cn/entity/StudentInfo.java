@@ -142,4 +142,22 @@ public class StudentInfo implements Serializable {
         this.flag = flag;
     }
 
+    @Override
+    public String toString() {
+        return "StudentInfo{" +
+                "id=" + id +
+                ", uPhone='" + uPhone + '\'' +
+                ", sId='" + sId + '\'' +
+                ", sName='" + sName + '\'' +
+                ", sSex='" + sSex + '\'' +
+                ", sSchool='" + sSchool + '\'' +
+                ", sProfession='" + sProfession + '\'' +
+                ", sClass='" + sClass + '\'' +
+                ", sRemarks='" + sRemarks + '\'' +
+                ", sStatus='" + sStatus + '\'' +
+                ", sExpertise='" + sExpertise + '\'' +
+                ", sProve='" + sProve + '\'' +
+                ", flag=" + flag +
+                '}';
+    }
 }

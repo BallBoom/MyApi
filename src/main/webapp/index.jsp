@@ -22,17 +22,30 @@
         var datas={
             "phone":$("#phone").val(),
             "pw":$("#pw").val()
-        }
+        };
         console.log(datas);
         $.ajax({
             url:"/user/login",
             type:"post",
             data:datas,
-            type:"post",
             dataType:"json",
             success:function (data) {
                 console.log(data.msg);
+                chexkCookie();
             }
         })
     }
+
+    function chexkCookie() {
+        var myphone=document.cookie;
+        var index=myphone.indexOf('=');
+        var phone=myphone.substring(index+1);
+        console.log(phone);
+    }
+
+
+
+
+
+
 </script>

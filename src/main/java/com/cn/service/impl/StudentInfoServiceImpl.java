@@ -60,8 +60,9 @@ public class StudentInfoServiceImpl implements StudentInfoService {
      * @return 实例对象
      */
     @Override
-    public int insert(StudentInfo studentInfo) {
-        return this.studentInfoDao.insert(studentInfo);
+    public StudentInfo insert(StudentInfo studentInfo) {
+        this.studentInfoDao.insert(studentInfo);
+        return studentInfo;
     }
 
     /**

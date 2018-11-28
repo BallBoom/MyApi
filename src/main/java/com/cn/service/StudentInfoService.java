@@ -41,7 +41,7 @@ public interface StudentInfoService {
      * @param studentInfo 实例对象
      * @return 影响行数
      */
-    int insert(StudentInfo studentInfo);
+    StudentInfo insert(StudentInfo studentInfo);
 
     /**
      * 修改数据

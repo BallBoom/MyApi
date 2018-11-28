@@ -3,10 +3,15 @@ package com.cn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.entity.CompanyInfo;
 import com.cn.service.CompanyInfoService;
+import com.cn.utils.UploadUtil;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * (CompanyInfo)表控制层
@@ -53,7 +58,7 @@ public class CompanyInfoController {
      * @param phone 手机号
      * @return 结果
      */
-    @RequestMapping(value = "Company",method = RequestMethod.GET)
+    @RequestMapping(value = "company",method = RequestMethod.GET)
     public String queryCompany(@RequestParam String phone){
         CompanyInfo companyInfo=this.companyInfoService.queryCompany(phone);
         JSONObject jsonObject=new JSONObject();
@@ -67,8 +72,16 @@ public class CompanyInfoController {
         }
     }
 
-    @RequestMapping(value = "Company",method = RequestMethod.POST)
-    public String insertCompany(HttpServletRequest request){
+    /**
+     * 企业信息完善
+     * @param request 表单信息
+     * @return 插入结果
+     * 1 插入成功 返回企业信息
+     * 0 插入失败
+     */
+     @RequestMapping(value = "company",method = RequestMethod.POST)
+     public String insertCompany(@RequestParam(value = "cPhoto") MultipartFile file,HttpServletRequest request) throws IOException {
+        JSONObject jsonObject=new JSONObject();
         CompanyInfo companyInfo=new CompanyInfo();
         companyInfo.setUPhone(request.getParameter("uPhone"));
         companyInfo.setCId(request.getParameter("cId"));
@@ -82,11 +95,15 @@ public class CompanyInfoController {
         companyInfo.setCProduct(request.getParameter("cProduct"));
         companyInfo.setCAddress(request.getParameter("cAddress"));
         companyInfo.setCPostCode(request.getParameter("cPostCode"));
-        companyInfo.setCPhoto(request.getParameter("cPhoto"));
+
+        // 图片文件名
+        String filename=UploadUtil.imgUpload(file);
+        System.out.println(filename);
+        companyInfo.setCPhoto(filename);
         companyInfo.setCWeb(request.getParameter("cWeb"));
         companyInfo.setCPlant(request.getParameter("cPlant"));
+        System.out.println(companyInfo.toString());
         CompanyInfo companyInfo1=this.companyInfoService.insert(companyInfo);
-        JSONObject jsonObject=new JSONObject();
         if(companyInfo1!=null){
             jsonObject.put("msg",1);
             jsonObject.put("data",companyInfo1);

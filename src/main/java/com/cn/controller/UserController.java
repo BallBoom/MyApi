@@ -3,15 +3,15 @@ package com.cn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.entity.User;
 import com.cn.service.UserService;
-import com.google.gson.JsonObject;
-import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
-import sun.misc.BASE64Decoder;
+import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -49,9 +49,12 @@ public class UserController {
      * @return 全部数据
      */
     @RequestMapping("/")
-    public String all() {
-        Gson gson=new Gson();
-        return gson.toJson(this.userService.all());
+    public String all(@RequestParam int page,@RequestParam int limit) {
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("msg",1);
+        jsonObject.put("item",this.userService.queryAllByLimit(page,limit));
+        jsonObject.put("count",this.userService.queryAllByLimit(page,limit).size());
+        return jsonObject.toString();
     }
 
     /**
@@ -65,7 +68,7 @@ public class UserController {
     public String insertUser(HttpServletRequest request ){
         User user=new User();
         user.setUName(request.getParameter("uName"));
-//        使对密码进行编码
+//        对密码进行编码
         BASE64Encoder base64Encoder=new BASE64Encoder();
         String afterPw=base64Encoder.encode(
                 (request.getParameter("uPassword")).getBytes());
@@ -99,7 +102,7 @@ public class UserController {
      * 用户不存在 0
      */
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public String login(String phone,String pw,HttpServletRequest request){
+    public String login(String phone, String pw, HttpServletResponse response){
 //        用户查询信息
         int i=this.userService.login(phone,pw);
         JSONObject jsonObject=new JSONObject();
@@ -111,11 +114,9 @@ public class UserController {
             return jsonObject.toString();
         }else if(i==1){
             jsonObject.put("msg",1);
-            request.setAttribute("phone",phone);
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",2);
-            request.setAttribute("phone",phone);
             return jsonObject.toString();
         }
     }

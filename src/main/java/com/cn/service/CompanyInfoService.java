@@ -1,6 +1,8 @@
 package com.cn.service;
 
 import com.cn.entity.CompanyInfo;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
