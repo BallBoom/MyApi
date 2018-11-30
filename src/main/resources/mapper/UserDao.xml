@@ -128,5 +128,11 @@
          where u_name=#{uName};
     </select>
 
+    <select id="queryByPhone" resultMap="UserMap">
+        select *
+         from project.user
+         where u_phone=#{uPhone}
+    </select>
+
 
 </mapper>

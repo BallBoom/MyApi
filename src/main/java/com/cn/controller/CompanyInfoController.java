@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class CompanyInfoController {
         JSONObject jsonObject=new JSONObject();
         if(companyInfo!=null){
             jsonObject.put("msg",1);
-            jsonObject.put("company",companyInfo);
+            jsonObject.put("data",companyInfo);
             return jsonObject.toString();
         }else {
             jsonObject.put("msg",0);
@@ -107,6 +108,7 @@ public class CompanyInfoController {
         if(companyInfo1!=null){
             jsonObject.put("msg",1);
             jsonObject.put("data",companyInfo1);
+
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",0);

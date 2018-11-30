@@ -1,7 +1,11 @@
 package com.cn.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cn.entity.CompanyInfo;
+import com.cn.entity.StudentInfo;
 import com.cn.entity.User;
+import com.cn.service.CompanyInfoService;
+import com.cn.service.StudentInfoService;
 import com.cn.service.UserService;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,12 @@ public class UserController {
      */
     @Resource
     private UserService userService;
+
+    @Resource
+    private CompanyInfoService companyInfoService;
+
+    @Resource
+    private StudentInfoService studentInfoService;
 
     /**
      * 通过主键查询单条数据
@@ -102,7 +112,7 @@ public class UserController {
      * 用户不存在 0
      */
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public String login(String phone, String pw, HttpServletResponse response){
+    public String login(String phone, String pw){
 //        用户查询信息
         int i=this.userService.login(phone,pw);
         JSONObject jsonObject=new JSONObject();
@@ -114,9 +124,21 @@ public class UserController {
             return jsonObject.toString();
         }else if(i==1){
             jsonObject.put("msg",1);
+            //手机号获取企业号
+            CompanyInfo companyInfo=this.companyInfoService.queryCompany(phone);
+            if(companyInfo==null){
+                jsonObject.put("cid",null);
+            }
+            jsonObject.put("cid",companyInfo.getCId());
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",2);
+            // 通过手机号获取学号
+            StudentInfo studentInfo=this.studentInfoService.queryStudent(phone);
+            if(studentInfo==null){
+                jsonObject.put("sid",null);
+            }
+            jsonObject.put("sid",studentInfo.getSId());
             return jsonObject.toString();
         }
     }
@@ -161,4 +183,18 @@ public class UserController {
             return jsonObject.toString();
         }
     }
+
+    /**
+     * 获取用户信息
+     * @param phone 手机号
+     * @return json信息
+     */
+    @RequestMapping(value = "info",method = RequestMethod.GET)
+    public String queryUser(String phone){
+        User user=this.userService.queryByPhone(phone);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("info",user);
+        return jsonObject.toString();
+    }
+
 }

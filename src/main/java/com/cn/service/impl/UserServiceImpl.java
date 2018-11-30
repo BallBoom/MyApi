@@ -134,4 +134,15 @@ public class UserServiceImpl implements UserService {
         if(user!=null){ return true; }
         return false;
     }
+
+    /**
+     * 查询用户所有信息
+     *
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    @Override
+    public User queryByPhone(String phone) {
+        return this.userDao.queryByPhone(phone);
+    }
 }

@@ -88,4 +88,11 @@ public interface UserDao {
      * @return 对象
      */
     User checkUsername(String username);
+
+    /**
+     * 查询用户所有信息
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    User queryByPhone(String phone);
 }
