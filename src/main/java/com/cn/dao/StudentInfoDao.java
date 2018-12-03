@@ -75,4 +75,11 @@ public interface StudentInfoDao {
      */
     StudentInfo queryStudent(String phone);
 
+    /**
+     * 查询所有学生的信息
+     * @param sid 学号
+     * @return 学生信息
+     */
+    StudentInfo queryAllInfo(String sid);
+
 }

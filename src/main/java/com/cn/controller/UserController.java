@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -130,6 +127,9 @@ public class UserController {
                 jsonObject.put("cid",null);
             }
             jsonObject.put("cid",companyInfo.getCId());
+            // 手机号获取用户信息
+            User user=this.userService.queryByPhone(phone);
+            jsonObject.put("info",user);
             return jsonObject.toString();
         }else{
             jsonObject.put("msg",2);
@@ -139,6 +139,9 @@ public class UserController {
                 jsonObject.put("sid",null);
             }
             jsonObject.put("sid",studentInfo.getSId());
+            // 手机号获取用户信息
+            User user=this.userService.queryByPhone(phone);
+            jsonObject.put("info",user);
             return jsonObject.toString();
         }
     }
@@ -189,7 +192,7 @@ public class UserController {
      * @param phone 手机号
      * @return json信息
      */
-    @RequestMapping(value = "info",method = RequestMethod.GET)
+    @RequestMapping(value = "info",method = RequestMethod.POST)
     public String queryUser(String phone){
         User user=this.userService.queryByPhone(phone);
         JSONObject jsonObject=new JSONObject();

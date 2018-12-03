@@ -3,16 +3,15 @@ package com.cn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.entity.StudentInfo;
 import com.cn.service.StudentInfoService;
+import com.cn.utils.ResponseMsg;
 import com.cn.utils.UploadUtil;
-import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * (StudentInfo)表控制层
@@ -101,17 +100,39 @@ public class StudentInfoController {
         studentInfo.setsProve(imgName);
         System.out.println(imgName);
         StudentInfo studentInfo1=this.studentInfoService.insert(studentInfo);
-        JSONObject jsonObject=new JSONObject();
         if(studentInfo1!=null){
-            jsonObject.put("msg",1);
-            jsonObject.put("data",studentInfo1);
-            return jsonObject.toString();
+            return ResponseMsg.success(studentInfo1);
+//            jsonObject.put("msg",1);
+//            jsonObject.put("data",studentInfo1);
+//            return jsonObject.toString();
         }else{
-            jsonObject.put("msg",0);
-            return jsonObject.toString();
+            return ResponseMsg.fail(studentInfo1);
+//            jsonObject.put("msg",0);
+//            return jsonObject.toString();
         }
     }
 
 
+    /**
+     * 获取学生全部信息
+     * @param sid 学号
+     * @return json信息
+     */
+    @RequestMapping(value = "myinfo",method = RequestMethod.POST)
+    public String queryALLStuInfo(@RequestParam String sid){
+        StudentInfo studentInfo=this.studentInfoService.queryAllInfo(sid);
+        System.out.println(studentInfo);
+//        JSONObject jsonObject=new JSONObject();
+        if(studentInfo!=null){
+            return ResponseMsg.success(studentInfo);
+//            jsonObject.put("msg",1);
+//            jsonObject.put("data",studentInfo);
+//            return jsonObject.toString();
+        }else{
+//            jsonObject.put("msg",0);
+//            return jsonObject.toString();
+            return ResponseMsg.fail(studentInfo);
+        }
+    }
 
 }

@@ -95,4 +95,16 @@ public class StudentInfoServiceImpl implements StudentInfoService {
     public StudentInfo queryStudent(String phone) {
         return this.studentInfoDao.queryStudent(phone);
     }
+
+    /**
+     * 查询所有学生的信息
+     *
+     * @param sid 学号
+     * @return 学生信息
+     */
+    @Override
+    public StudentInfo queryAllInfo(String sid) {
+        System.out.println("1111111111111111");
+        return this.studentInfoDao.queryAllInfo(sid);
+    }
 }

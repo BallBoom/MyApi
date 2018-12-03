@@ -142,4 +142,98 @@
         where u_phone=#{uPhone}
     </select>
 
+    <!--查询学生所有信息-->
+    <select id="queryAllInfo" resultMap="StudentAllInfoMap" parameterType="String">
+        select
+        stu.u_phone,
+        stu.s_id,
+        stu.s_name,
+        stu.s_sex,
+        stu.s_school,
+        stu.s_class,
+        stu.s_profession,
+        stu.s_remarks,
+        stu.s_expertise,
+        l.let_photo,
+        p.p_name,
+        p.p_role,
+        p.p_content,
+        p.p_score,
+        p.p_prove,
+        c.c_name,
+        c.c_date,
+        c.c_grade,
+        c.c_lever,
+        a.a_name,
+        a.a_time,
+        a.works_name,
+        a.a_persons,
+        a.a_complete,
+        a.is_patent,
+        a.is_reward,
+        a.a_prove
+        from student_info stu
+        left join stu_letter l on stu.s_id = l.fk_s_id
+        left join practice p on stu.s_id = p.fk_s_id
+        left join contest c on stu.s_id = c.fk_s_id
+        left join achievements a on stu.s_id = a.fk_s_id
+        where stu.s_id=#{sId}
+    </select>
+
+    <!--学生所有信息map-->
+    <resultMap type="com.cn.entity.StudentInfo" id="StudentAllInfoMap">
+        <result property="uPhone" column="u_phone" jdbcType="VARCHAR"/>
+        <result property="sId" column="s_id" jdbcType="VARCHAR"/>
+        <result property="sName" column="s_name" jdbcType="VARCHAR"/>
+        <result property="sSex" column="s_sex" jdbcType="VARCHAR"/>
+        <result property="sSchool" column="s_school" jdbcType="VARCHAR"/>
+        <result property="sProfession" column="s_profession" jdbcType="VARCHAR"/>
+        <result property="sClass" column="s_class" jdbcType="VARCHAR"/>
+        <result property="sRemarks" column="s_remarks" jdbcType="VARCHAR"/>
+        <result property="sStatus" column="s_status" jdbcType="VARCHAR"/>
+        <result property="sExpertise" column="s_expertise" jdbcType="VARCHAR"/>
+        <result property="sProve" column="s_prove" jdbcType="VARCHAR"/>
+        <!--推荐信-->
+        <association property="stuLetter" javaType="com.cn.entity.StuLetter">
+            <result property="letPhoto" column="let_photo" jdbcType="VARCHAR"/>
+        </association>
+        <!--社会实践-->
+        <collection property="practiceList" ofType="com.cn.entity.Practice">
+            <result property="id" column="id" jdbcType="INTEGER"/>
+            <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+            <result property="pName" column="p_name" jdbcType="VARCHAR"/>
+            <result property="pRole" column="p_role" jdbcType="VARCHAR"/>
+            <result property="pContent" column="p_content" jdbcType="VARCHAR"/>
+            <result property="pScore" column="p_score" jdbcType="VARCHAR"/>
+            <result property="pProve" column="p_prove" jdbcType="VARCHAR"/>
+        </collection>
+
+
+        <!--竞赛-->
+        <collection property="contestsList" ofType="com.cn.entity.Contest">
+            <result property="id" column="id" jdbcType="INTEGER"/>
+            <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+            <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+            <result property="cDate" column="c_date" jdbcType="TIMESTAMP"/>
+            <result property="cGrade" column="c_grade" jdbcType="VARCHAR"/>
+            <result property="cLever" column="c_lever" jdbcType="VARCHAR"/>
+            <result property="cProve" column="c_prove" jdbcType="VARCHAR"/>
+        </collection>
+        <!--成果信息-->
+        <collection property="achievementsList" ofType="com.cn.entity.Achievements">
+            <result property="id" column="id" jdbcType="INTEGER"/>
+            <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+            <result property="aName" column="a_name" jdbcType="VARCHAR"/>
+            <result property="aTime" column="a_time" jdbcType="TIMESTAMP"/>
+            <result property="aPersons" column="a_persons" jdbcType="INTEGER"/>
+            <result property="worksName" column="works_name" jdbcType="VARCHAR"/>
+            <result property="aComplete" column="a_complete" jdbcType="VARCHAR"/>
+            <result property="isReward" column="is_reward" jdbcType="VARCHAR"/>
+            <result property="isPatent" column="is_patent" jdbcType="VARCHAR"/>
+            <result property="aProve" column="a_prove" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+
+
 </mapper>
