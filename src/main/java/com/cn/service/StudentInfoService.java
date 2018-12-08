@@ -24,7 +24,7 @@ public interface StudentInfoService {
     * 无条件查询全部数据
     * @return 对象列表
     */
-    List<StudentInfo> all();
+    List<StudentInfo> all(boolean flag);
     
     /**
      * 查询多条数据
@@ -73,5 +73,12 @@ public interface StudentInfoService {
      * @return 学生信息
      */
     StudentInfo queryAllInfo(String sid);
+
+    /**
+     * 通过学号审核信息
+     * @param sid 学号
+     * @return 更改信息
+     */
+    int updateStudent(String sid);
 
 }

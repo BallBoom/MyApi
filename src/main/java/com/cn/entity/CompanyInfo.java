@@ -18,13 +18,13 @@ public class CompanyInfo implements Serializable {
     private String cId;
     
     private String cName;
-    
+//    联系人
     private String cContact;
-    
+//    联系人电话
     private String cPhone;
     
     private String cEmail;
-    
+//    QQ
     private String cQq;
     
     private String cBusiness;

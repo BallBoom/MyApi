@@ -42,7 +42,7 @@ public interface CompanyInfoDao {
     * 无条件查询全部数据
     * @return 对象列表
     */
-    List<CompanyInfo> all();
+    List<CompanyInfo> all(boolean flag);
     
     /**
      * 新增数据

@@ -48,8 +48,8 @@ public class StudentInfoServiceImpl implements StudentInfoService {
      * @return 对象列表
      */
     @Override
-    public List<StudentInfo> all(){
-        return this.studentInfoDao.all();
+    public List<StudentInfo> all(boolean flag){
+        return this.studentInfoDao.all(flag);
     }
     
 
@@ -104,7 +104,19 @@ public class StudentInfoServiceImpl implements StudentInfoService {
      */
     @Override
     public StudentInfo queryAllInfo(String sid) {
-        System.out.println("1111111111111111");
         return this.studentInfoDao.queryAllInfo(sid);
     }
+
+    /**
+     * 通过学号审核信息
+     *
+     * @param sid 学号
+     * @return 更改信息
+     */
+    @Override
+    public int updateStudent(String sid) {
+        return this.studentInfoDao.updateStudent(sid);
+    }
+
+
 }

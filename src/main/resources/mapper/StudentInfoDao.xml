@@ -34,9 +34,11 @@
         limit #{offset}, #{limit}
     </select>
     
-    <!--无条件查询全部数据-->
+    <!--查寻所有学生数据-->
     <select id="all" resultMap="StudentInfoMap">
         select * from project.student_info
+        where flag=#{false}
+        order by id
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -154,6 +156,7 @@
         stu.s_profession,
         stu.s_remarks,
         stu.s_expertise,
+        stu.s_prove,
         l.let_photo,
         p.p_name,
         p.p_role,
@@ -164,6 +167,7 @@
         c.c_date,
         c.c_grade,
         c.c_lever,
+        c.c_prove,
         a.a_name,
         a.a_time,
         a.works_name,
@@ -171,12 +175,17 @@
         a.a_complete,
         a.is_patent,
         a.is_reward,
-        a.a_prove
+        a.a_prove,
+        w.w_name,
+        w.w_date,
+        w.w_introduction,
+        w.w_photo
         from student_info stu
         left join stu_letter l on stu.s_id = l.fk_s_id
         left join practice p on stu.s_id = p.fk_s_id
         left join contest c on stu.s_id = c.fk_s_id
         left join achievements a on stu.s_id = a.fk_s_id
+        left join prof_works w on stu.s_id = w.fk_s_id
         where stu.s_id=#{sId}
     </select>
 
@@ -232,8 +241,23 @@
             <result property="isPatent" column="is_patent" jdbcType="VARCHAR"/>
             <result property="aProve" column="a_prove" jdbcType="VARCHAR"/>
         </collection>
+        <!--专业作品-->
+        <collection property="profWorksList" ofType="com.cn.entity.ProfWorks">
+            <result property="id" column="id" jdbcType="INTEGER"/>
+            <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+            <result property="wName" column="w_name" jdbcType="VARCHAR"/>
+            <result property="wIntroduction" column="w_introduction" jdbcType="VARCHAR"/>
+            <result property="wDate" column="w_date" jdbcType="TIMESTAMP"/>
+            <result property="wPhoto" column="w_photo" jdbcType="VARCHAR"/>
+        </collection>
     </resultMap>
 
-
+    <!--管理员审核学生信息-->
+    <update id="updateStudent" >
+        update
+        student_info
+        set flag=true
+        where s_id=#{sId}
+    </update>
 
 </mapper>

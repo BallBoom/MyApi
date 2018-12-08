@@ -23,7 +23,7 @@ public class StudentInfo implements Serializable {
     private String sSex;
     
     private String sSchool;
-    
+//    专业
     private String sProfession;
     
     private String sClass;
@@ -31,7 +31,7 @@ public class StudentInfo implements Serializable {
     private String sRemarks;
     
     private String sStatus;
-    
+//    特长
     private String sExpertise;
 //    学生证图片
     private String sProve;
@@ -46,6 +46,8 @@ public class StudentInfo implements Serializable {
     private List<Contest> contestsList;
 //      成果信息
     private List<Achievements> achievementsList;
+//    专业作品
+    private List<ProfWorks> profWorksList;
 
 
     public Integer getId() {
@@ -182,6 +184,14 @@ public class StudentInfo implements Serializable {
 
     public void setStuLetter(StuLetter stuLetter) {
         this.stuLetter = stuLetter;
+    }
+
+    public List<ProfWorks> getProfWorksList() {
+        return profWorksList;
+    }
+
+    public void setProfWorksList(List<ProfWorks> profWorksList) {
+        this.profWorksList = profWorksList;
     }
 
     @Override

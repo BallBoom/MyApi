@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * (StudentInfo)表控制层
@@ -43,19 +44,35 @@ public class StudentInfoController {
     
     
     /**
-     * 无条件查询全部数据
+     * 查询所有未审核的学生
      *
      * @return 全部数据
      */
-    @RequestMapping("/")
-    public String all() {
-        Gson gson=new Gson();
-        return gson.toJson(this.studentInfoService.all());
+    @RequestMapping(value = "nocheck",method = RequestMethod.GET)
+    public String all( Integer draw) {
+        List<StudentInfo> studentInfoList=this.studentInfoService.all(false);
+        JSONObject jsonObject=new JSONObject();
+        if (studentInfoList.size()!=0){
+            jsonObject.put("msg",1);
+            jsonObject.put("data",studentInfoList);
+            jsonObject.put("draw",draw);
+//            返回的数据记录数
+            jsonObject.put("recordsTotal",studentInfoList.size());
+//            过滤后的记录数
+            jsonObject.put("recordsFiltered",studentInfoList.size());
+            return jsonObject.toString();
+//            return ResponseMsg.success(studentInfoList);
+        }else {
+            jsonObject.put("msg",0);
+            return jsonObject.toString();
+//            return ResponseMsg.fail();
+        }
+
     }
 
     /**
      * 通过手机号查询学生
-     * @param phone 手机号 从session中获取
+     * @param phone 手机号 从cookie中获取
      * @return 学生信息
      * 存在 1，则获取学生信息 student
      * 不存在 0，则补全信息
@@ -106,7 +123,7 @@ public class StudentInfoController {
 //            jsonObject.put("data",studentInfo1);
 //            return jsonObject.toString();
         }else{
-            return ResponseMsg.fail(studentInfo1);
+            return ResponseMsg.fail();
 //            jsonObject.put("msg",0);
 //            return jsonObject.toString();
         }
@@ -131,7 +148,26 @@ public class StudentInfoController {
         }else{
 //            jsonObject.put("msg",0);
 //            return jsonObject.toString();
-            return ResponseMsg.fail(studentInfo);
+            return ResponseMsg.fail();
+        }
+    }
+
+
+    /**
+     * 管理员审核学生信息
+     * @param sid 学号
+     * @return 更改信息
+     */
+    @RequestMapping(value = "updateFlag",method = RequestMethod.POST)
+    public String updateStudent(@RequestParam String sid){
+        int i=this.studentInfoService.updateStudent(sid);
+        JSONObject jsonObject=new JSONObject();
+        if(i>=1){
+            jsonObject.put("msg",1);
+            return jsonObject.toString();
+        }else {
+            jsonObject.put("msg",0);
+            return jsonObject.toString();
         }
     }
 

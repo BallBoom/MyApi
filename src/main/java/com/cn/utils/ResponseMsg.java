@@ -13,7 +13,7 @@ public class ResponseMsg {
     }
 
 
-    public static String fail(Object object){
+    public static String fail(){
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("msg",0);
         return jsonObject.toString();

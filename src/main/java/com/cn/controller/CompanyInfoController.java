@@ -3,16 +3,16 @@ package com.cn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.entity.CompanyInfo;
 import com.cn.service.CompanyInfoService;
+import com.cn.utils.ResponseMsg;
 import com.cn.utils.UploadUtil;
-import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * (CompanyInfo)表控制层
@@ -48,10 +48,20 @@ public class CompanyInfoController {
      *
      * @return 全部数据
      */
-    @RequestMapping("/")
-    public String all() {
-        Gson gson=new Gson();
-        return gson.toJson(this.companyInfoService.all());
+    @RequestMapping(value = "nocheck",method = RequestMethod.GET)
+    public String all(Integer draw) {
+
+        List<CompanyInfo> companyInfoList=this.companyInfoService.all(false);
+        JSONObject jsonObject=new JSONObject();
+        if(companyInfoList.size()!=0){
+            jsonObject.put("draw",draw);
+            jsonObject.put("data",companyInfoList);
+            jsonObject.put("recordsTotal",companyInfoList.size());
+            jsonObject.put("recordsFiltered",companyInfoList.size());
+            return jsonObject.toString();
+        }else{
+            return ResponseMsg.fail();
+        }
     }
 
     /**
@@ -115,5 +125,7 @@ public class CompanyInfoController {
             return jsonObject.toString();
         }
     }
+
+    // TODO: 2018/12/8 0008 企业的基本信息的展示，图片查看
 
 }

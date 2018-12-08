@@ -1,7 +1,6 @@
 package com.cn.service;
 
 import com.cn.entity.CompanyInfo;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public interface CompanyInfoService {
     * 无条件查询全部数据
     * @return 对象列表
     */
-    List<CompanyInfo> all();
+    List<CompanyInfo> all(boolean flag);
     
     /**
      * 查询多条数据

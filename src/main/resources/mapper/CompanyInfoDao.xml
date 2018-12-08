@@ -41,6 +41,8 @@
     <!--无条件查询全部数据-->
     <select id="all" resultMap="CompanyInfoMap">
         select * from project.company_info
+        where flag=#{flag}
+        order by id
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -174,7 +176,6 @@
     <select id="queryCompany" resultMap="CompanyInfoMap">
         select * from project.company_info
          where u_phone=#{uPhone}
-         order by id
     </select>
 
 </mapper>

@@ -109,7 +109,7 @@ public class UserController {
      * 用户不存在 0
      */
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public String login(String phone, String pw){
+    public String login(String phone, String pw ){
 //        用户查询信息
         int i=this.userService.login(phone,pw);
         JSONObject jsonObject=new JSONObject();
@@ -123,10 +123,14 @@ public class UserController {
             jsonObject.put("msg",1);
             //手机号获取企业号
             CompanyInfo companyInfo=this.companyInfoService.queryCompany(phone);
-            if(companyInfo==null){
-                jsonObject.put("cid",null);
+            if(companyInfo!=null){
+                jsonObject.put("cid",companyInfo.getCId());
+                jsonObject.put("cname",companyInfo.getCName());
+            }else{
+                jsonObject.put("cid","");
+                jsonObject.put("cname","");
             }
-            jsonObject.put("cid",companyInfo.getCId());
+
             // 手机号获取用户信息
             User user=this.userService.queryByPhone(phone);
             jsonObject.put("info",user);
@@ -136,9 +140,12 @@ public class UserController {
             // 通过手机号获取学号
             StudentInfo studentInfo=this.studentInfoService.queryStudent(phone);
             if(studentInfo==null){
-                jsonObject.put("sid",null);
+                jsonObject.put("sid","");
+                jsonObject.put("sname","");
+            }else{
+                jsonObject.put("sid",studentInfo.getSId());
+                jsonObject.put("sname",studentInfo.getSName());
             }
-            jsonObject.put("sid",studentInfo.getSId());
             // 手机号获取用户信息
             User user=this.userService.queryByPhone(phone);
             jsonObject.put("info",user);
