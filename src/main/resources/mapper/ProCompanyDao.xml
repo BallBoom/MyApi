@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.ProCompanyDao">
+
+    <resultMap type="com.cn.entity.ProCompany" id="ProCompanyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkCId" column="fk_c_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="cpName" column="cp_name" jdbcType="VARCHAR"/>
+        <result property="cpReward" column="cp_reward" jdbcType="DOUBLE"/>
+        <result property="cpDemand" column="cp_demand" jdbcType="VARCHAR"/>
+        <result property="cpStartT" column="cp_start_t" jdbcType="DATE"/>
+        <result property="cpEndT" column="cp_end_t" jdbcType="DATE"/>
+        <result property="cpDetail" column="cp_detail" jdbcType="VARCHAR"/>
+        <result property="pubDate" column="pub_date" jdbcType="TIMESTAMP"/>
+        <result property="cpFlag" column="cp_flag" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--学生通过项目ID查询自己竞标的项目信息-->
+    <select id="queryById" resultMap="ProCompanyMap">
+        select
+          id, fk_c_id,c_name, cp_name, cp_reward, cp_demand, cp_start_t, cp_end_t, cp_detail
+        from project.pro_company
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ProCompanyMap">
+        select
+          id, fk_c_id,c_name, cp_name, cp_reward, cp_demand, cp_start_t, cp_end_t, cp_detail, cp_flag
+        from project.pro_company
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="ProCompanyMap">
+        select * from project.pro_company
+        where cp_flag=#{cpFlag}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ProAndCommentMap">
+        select pro_company.*,com_pro_stu.c_comment
+        from pro_company left join com_pro_stu
+        on pro_company.id=com_pro_stu.p_id
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fkCId != null and fkCId != ''">
+                and fk_c_id = #{fkCId}
+            </if>
+            <if test="cpName != null and cpName != ''">
+                and cp_name like '%${cpName}%'
+            </if>
+            <if test="cpReward != null and cpReward != 0">
+                and cp_reward = #{cpReward}
+            </if>
+            <if test="cpDemand != null and cpDemand != ''">
+                and cp_demand = #{cpDemand}
+            </if>
+            <if test="cpStartT != null">
+                and cp_start_t = #{cpStartT}
+            </if>
+            <if test="cpEndT != null">
+                and cp_end_t = #{cpEndT}
+            </if>
+            <if test="cpDetail != null and cpDetail != ''">
+                and cp_detail = #{cpDetail}
+            </if>
+            <if test="cpFlag != null">
+                and cp_flag = #{cpFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.pro_company(fk_c_id,c_name, cp_name, cp_reward, cp_demand, cp_start_t, cp_end_t, cp_detail, cp_flag)
+        values (#{fkCId},#{cName}, #{cpName}, #{cpReward}, #{cpDemand}, #{cpStartT}, #{cpEndT}, #{cpDetail}, #{cpFlag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.pro_company
+        <set>
+            <if test="fkCId != null and fkCId != ''">
+                fk_c_id = #{fkCId},
+            </if>
+            <if test="cpName != null and cpName != ''">
+                cp_name = #{cpName},
+            </if>
+            <if test="cpReward != null">
+                cp_reward = #{cpReward},
+            </if>
+            <if test="cpDemand != null and cpDemand != ''">
+                cp_demand = #{cpDemand},
+            </if>
+            <if test="cpStartT != null">
+                cp_start_t = #{cpStartT},
+            </if>
+            <if test="cpEndT != null">
+                cp_end_t = #{cpEndT},
+            </if>
+            <if test="cpDetail != null and cpDetail != ''">
+                cp_detail = #{cpDetail},
+            </if>
+            <if test="cpFlag != null">
+                cp_flag = #{cpFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.pro_company where id = #{id}
+    </delete>
+
+    <!--通过企业号查询所有项目-->
+    <select id="queryProAndCommentByCId" resultMap="ProAndCommentMap">
+        select pro_company.*,com_pro_stu.c_comment
+         from pro_company left join com_pro_stu
+         on pro_company.id=com_pro_stu.p_id
+         where pro_company.fk_c_id=#{fkCId}
+    </select>
+
+    <!--企业项目加项目评价-->
+    <resultMap type="com.cn.entity.ProCompany" id="ProAndCommentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkCId" column="fk_c_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="cpName" column="cp_name" jdbcType="VARCHAR"/>
+        <result property="cpReward" column="cp_reward" jdbcType="DOUBLE"/>
+        <result property="cpDemand" column="cp_demand" jdbcType="VARCHAR"/>
+        <result property="cpStartT" column="cp_start_t" jdbcType="TIMESTAMP"/>
+        <result property="cpEndT" column="cp_end_t" jdbcType="TIMESTAMP"/>
+        <result property="cpDetail" column="cp_detail" jdbcType="VARCHAR"/>
+        <result property="cpFlag" column="cp_flag" jdbcType="BIT"/>
+        <association property="comProStu" javaType="com.cn.entity.ComProStu">
+            <result property="cComment" column="c_comment" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <!--管理员审核企业项目添加审核时间，即发布时间-->
+    <update id="updateProFlag" >
+        update
+        project.pro_company
+        set cp_flag=true
+                ,pub_date=#{pubDate}
+        where id=#{id}
+    </update>
+
+</mapper>

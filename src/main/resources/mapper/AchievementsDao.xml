@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.AchievementsDao">
+
+    <resultMap type="com.cn.entity.Achievements" id="AchievementsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+        <result property="aName" column="a_name" jdbcType="VARCHAR"/>
+        <result property="aTime" column="a_time" jdbcType="TIMESTAMP"/>
+        <result property="aPersons" column="a_persons" jdbcType="INTEGER"/>
+        <result property="worksName" column="works_name" jdbcType="VARCHAR"/>
+        <result property="aComplete" column="a_complete" jdbcType="VARCHAR"/>
+        <result property="isReward" column="is_reward" jdbcType="VARCHAR"/>
+        <result property="isPatent" column="is_patent" jdbcType="VARCHAR"/>
+        <result property="aProve" column="a_prove" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AchievementsMap">
+        select
+          id, fk_s_id, a_name, a_time, a_persons, works_name, a_complete, is_reward, is_patent, a_prove
+        from project.achievements
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AchievementsMap">
+        select
+          id, fk_s_id, a_name, a_time, a_persons, works_name, a_complete, is_reward, is_patent, a_prove
+        from project.achievements
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="AchievementsMap">
+        select * from project.achievements
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AchievementsMap">
+        select
+          id, fk_s_id, a_name, a_time, a_persons, works_name, a_complete, is_reward, is_patent, a_prove
+        from project.achievements
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fkSId != null and fkSId != ''">
+                and fk_s_id = #{fkSId}
+            </if>
+            <if test="aName != null and aName != ''">
+                and a_name = #{aName}
+            </if>
+            <if test="aTime != null">
+                and a_time = #{aTime}
+            </if>
+            <if test="aPersons != null">
+                and a_persons = #{aPersons}
+            </if>
+            <if test="worksName != null and worksName != ''">
+                and works_name = #{worksName}
+            </if>
+            <if test="aComplete != null and aComplete != ''">
+                and a_complete = #{aComplete}
+            </if>
+            <if test="isReward != null and isReward != ''">
+                and is_reward = #{isReward}
+            </if>
+            <if test="isPatent != null and isPatent != ''">
+                and is_patent = #{isPatent}
+            </if>
+            <if test="aProve != null and aProve != ''">
+                and a_prove = #{aProve}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.achievements(fk_s_id, a_name, a_time, a_persons, works_name, a_complete, is_reward, is_patent, a_prove)
+        values (#{fkSId}, #{aName}, #{aTime}, #{aPersons}, #{worksName}, #{aComplete}, #{isReward}, #{isPatent}, #{aProve})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.achievements
+        <set>
+            <if test="fkSId != null and fkSId != ''">
+                fk_s_id = #{fkSId},
+            </if>
+            <if test="aName != null and aName != ''">
+                a_name = #{aName},
+            </if>
+            <if test="aTime != null">
+                a_time = #{aTime},
+            </if>
+            <if test="aPersons != null">
+                a_persons = #{aPersons},
+            </if>
+            <if test="worksName != null and worksName != ''">
+                works_name = #{worksName},
+            </if>
+            <if test="aComplete != null and aComplete != ''">
+                a_complete = #{aComplete},
+            </if>
+            <if test="isReward != null and isReward != ''">
+                is_reward = #{isReward},
+            </if>
+            <if test="isPatent != null and isPatent != ''">
+                is_patent = #{isPatent},
+            </if>
+            <if test="aProve != null and aProve != ''">
+                a_prove = #{aProve},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.achievements where id = #{id}
+    </delete>
+
+    <!--通过学号查询-->
+    <select id="queryByfkSId" resultMap="AchievementsMap">
+        select * from project.achievements
+         where fk_s_id=#{fkSId}
+    </select>
+</mapper>

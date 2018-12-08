@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.StuLetterDao">
+
+    <resultMap type="com.cn.entity.StuLetter" id="StuLetterMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+        <result property="letPhoto" column="let_photo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StuLetterMap">
+        select
+          id, fk_s_id, let_photo
+        from project.stu_letter
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StuLetterMap">
+        select
+          id, fk_s_id, let_photo
+        from project.stu_letter
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="StuLetterMap">
+        select * from project.stu_letter
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="StuLetterMap">
+        select
+          id, fk_s_id, let_photo
+        from project.stu_letter
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fkSId != null and fkSId != ''">
+                and fk_s_id = #{fkSId}
+            </if>
+            <if test="letPhoto != null and letPhoto != ''">
+                and let_photo = #{letPhoto}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.stu_letter(fk_s_id, let_photo)
+        values (#{fkSId}, #{letPhoto})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.stu_letter
+        <set>
+            <if test="fkSId != null and fkSId != ''">
+                fk_s_id = #{fkSId},
+            </if>
+            <if test="letPhoto != null and letPhoto != ''">
+                let_photo = #{letPhoto},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.stu_letter where id = #{id}
+    </delete>
+
+    <!--展示推荐信-->
+    <select id="queryLetter" resultMap="StuLetterMap">
+        select *
+        from stu_letter
+        where stu_letter.fk_s_id=#{fkSId};
+    </select>
+
+</mapper>

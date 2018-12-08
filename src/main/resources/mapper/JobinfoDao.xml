@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.JobinfoDao">
+
+    <resultMap type="com.cn.entity.Jobinfo" id="JobinfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkCId" column="fk_c_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="jSTime" column="j_s_time" jdbcType="DATE"/>
+        <result property="jETime" column="j_e_time" jdbcType="DATE"/>
+        <result property="jPost" column="j_post" jdbcType="VARCHAR"/>
+        <result property="jPerson" column="j_person" jdbcType="VARCHAR"/>
+        <result property="jPhone" column="j_phone" jdbcType="VARCHAR"/>
+        <result property="jOthers" column="j_others" jdbcType="VARCHAR"/>
+        <result property="pubDate" column="pub_date" jdbcType="TIMESTAMP"/>
+        <result property="flag" column="flag" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="JobinfoMap">
+        select
+          id, fk_c_id,c_name, j_s_time, j_e_time,j_post, j_person, j_phone, j_others
+        from project.jobinfo
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="JobinfoMap">
+        select
+          id, fk_c_id,c_name, j_s_time, j_e_time,j_post, j_person, j_phone, j_others
+        from project.jobinfo
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="JobinfoMap">
+        select * from project.jobinfo
+        where flag=#{flag}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAllByJob" resultMap="JobinfoMap">
+        select
+          id, fk_c_id,c_name, j_s_time, j_e_time,j_post, j_person, j_phone, j_others
+        from project.jobinfo
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fkCId != null and fkCId != '' ">
+                and fk_c_id = #{fkCId}
+            </if>
+            <if test="jSTime != null">
+                and j_s_time = #{jSTime}
+            </if>
+            <if test="jETime != null">
+                and j_e_time = #{jETime}
+            </if>
+            <if test="jPost != null and jPost != '' ">
+                and j_post like '%${jPost}%'
+            </if>
+            <if test="jPerson != null and jPerson != ''">
+                and j_person = #{jPerson}
+            </if>
+            <if test="jPhone != null and jPhone != ''">
+                and j_phone = #{jPhone}
+            </if>
+            <if test="jOthers != null and jOthers != ''">
+                and j_others = #{jOthers}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.jobinfo(fk_c_id,c_name, j_s_time, j_e_time,j_post, j_person, j_phone, j_others)
+        values (#{fkCId},#{cName}, #{jSTime}, #{jETime},#{jPost}, #{jPerson}, #{jPhone}, #{jOthers})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.jobinfo
+        <set>
+            <if test="fkCId != null and fkCId != ''">
+                fk_c_id = #{fkCId},
+            </if>
+            <if test="jSTime != null">
+                j_s_time = #{jSTime},
+            </if>
+            <if test="jETime != null">
+                j_e_time = #{jETime},
+            </if>
+            <if test="jPost !=null">
+                j_post = #{jPost},
+            </if>
+            <if test="jPerson != null and jPerson != ''">
+                j_person = #{jPerson},
+            </if>
+            <if test="jPhone != null and jPhone != ''">
+                j_phone = #{jPhone},
+            </if>
+            <if test="jOthers != null and jOthers != ''">
+                j_others = #{jOthers},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.jobinfo where id = #{id}
+    </delete>
+    
+    <!--通过企业号查询招聘信息-->
+    <select id="queryByCId" resultMap="JobinfoMap">
+        select *
+        from jobinfo
+         where fk_c_id=#{fkCId};
+    </select>
+
+    <!--管理员审核招聘信息-->
+    <update id="updateJobFlag">
+        update
+        project.jobinfo
+        set flag=true,pub_date=#{pubDate}
+        where id=#{id}
+    </update>
+
+</mapper>

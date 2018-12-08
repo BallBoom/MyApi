@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.ComProStuDao">
+
+    <resultMap type="com.cn.entity.ComProStu" id="ComProStuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="pId" column="p_id" jdbcType="INTEGER"/>
+        <result property="pName" column="p_name" jdbcType="VARCHAR"/>
+        <result property="cId" column="c_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="sId" column="s_id" jdbcType="VARCHAR"/>
+        <result property="sName" column="s_name" jdbcType="VARCHAR"/>
+        <result property="pState" column="p_state" jdbcType="VARCHAR"/>
+        <result property="cComment" column="c_comment" jdbcType="VARCHAR"/>
+        <result property="flag" column="flag" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--企业根据项目号用来查询竞标的学生-->
+    <select id="queryStudentBypId" resultMap="ComProStuMap">
+        select
+          id, p_id, p_name, c_id, c_name, s_id, s_name, p_state, c_comment, flag
+        from project.com_pro_stu
+        where p_id = #{pId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ComProStuMap">
+        select
+          id, p_id, p_name, c_id, c_name, s_id, s_name, p_state, c_comment, flag
+        from project.com_pro_stu
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="ComProStuMap">
+        select * from project.com_pro_stu
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ComProStuMap">
+        select
+          id, p_id, p_name, c_id, c_name, s_id, s_name, p_state, c_comment, flag
+        from project.com_pro_stu
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="pId != null">
+                and p_id = #{pId}
+            </if>
+            <if test="pName != null and pName != ''">
+                and p_name = #{pName}
+            </if>
+            <if test="cId != null and cId != ''">
+                and c_id = #{cId}
+            </if>
+            <if test="cName != null and cName != ''">
+                and c_name = #{cName}
+            </if>
+            <if test="sId != null and sId != ''">
+                and s_id = #{sId}
+            </if>
+            <if test="sName != null and sName != ''">
+                and s_name = #{sName}
+            </if>
+            <if test="pState != null and pState != ''">
+                and p_state = #{pState}
+            </if>
+            <if test="cComment != null and cComment != ''">
+                and c_comment = #{cComment}
+            </if>
+            <if test="flag != null">
+                and flag = #{flag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.com_pro_stu(p_id, p_name, c_id, c_name, s_id, s_name, p_state, c_comment, flag)
+        values (#{pId}, #{pName}, #{cId}, #{cName}, #{sId}, #{sName}, #{pState}, #{cComment}, #{flag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.com_pro_stu
+        <set>
+            <if test="pId != null">
+                p_id = #{pId},
+            </if>
+            <if test="pName != null and pName != ''">
+                p_name = #{pName},
+            </if>
+            <if test="cId != null and cId != ''">
+                c_id = #{cId},
+            </if>
+            <if test="cName != null and cName != ''">
+                c_name = #{cName},
+            </if>
+            <if test="sId != null and sId != ''">
+                s_id = #{sId},
+            </if>
+            <if test="sName != null and sName != ''">
+                s_name = #{sName},
+            </if>
+            <if test="pState != null and pState != ''">
+                p_state = #{pState},
+            </if>
+            <if test="cComment != null and cComment != ''">
+                c_comment = #{cComment},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.com_pro_stu where id = #{id}
+    </delete>
+
+    <!--查询学生竞标的项目的项目号-->
+    <select id="queryPidBySid" resultMap="ComProStuMap">
+        select p_id
+        from com_pro_stu
+        where s_id=#{sId};
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.dao.ContestDao">
+
+    <resultMap type="com.cn.entity.Contest" id="ContestMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fkSId" column="fk_s_id" jdbcType="VARCHAR"/>
+        <result property="cName" column="c_name" jdbcType="VARCHAR"/>
+        <result property="cDate" column="c_date" jdbcType="TIMESTAMP"/>
+        <result property="cGrade" column="c_grade" jdbcType="VARCHAR"/>
+        <result property="cLever" column="c_lever" jdbcType="VARCHAR"/>
+        <result property="cProve" column="c_prove" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ContestMap">
+        select
+          id, fk_s_id, c_name, c_date, c_grade, c_lever, c_prove
+        from project.contest
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ContestMap">
+        select
+          id, fk_s_id, c_name, c_date, c_grade, c_lever, c_prove
+        from project.contest
+        limit #{offset}, #{limit}
+    </select>
+    
+    <!--无条件查询全部数据-->
+    <select id="all" resultMap="ContestMap">
+        select * from project.contest
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ContestMap">
+        select
+          id, fk_s_id, c_name, c_date, c_grade, c_lever, c_prove
+        from project.contest
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="fkSId != null and fkSId != ''">
+                and fk_s_id = #{fkSId}
+            </if>
+            <if test="cName != null and cName != ''">
+                and c_name = #{cName}
+            </if>
+            <if test="cDate != null">
+                and c_date = #{cDate}
+            </if>
+            <if test="cGrade != null and cGrade != ''">
+                and c_grade = #{cGrade}
+            </if>
+            <if test="cLever != null and cLever != ''">
+                and c_lever = #{cLever}
+            </if>
+            <if test="cProve != null and cProve != ''">
+                and c_prove = #{cProve}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into project.contest(fk_s_id, c_name, c_date, c_grade, c_lever, c_prove)
+        values (#{fkSId}, #{cName}, #{cDate}, #{cGrade}, #{cLever}, #{cProve})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update project.contest
+        <set>
+            <if test="fkSId != null and fkSId != ''">
+                fk_s_id = #{fkSId},
+            </if>
+            <if test="cName != null and cName != ''">
+                c_name = #{cName},
+            </if>
+            <if test="cDate != null">
+                c_date = #{cDate},
+            </if>
+            <if test="cGrade != null and cGrade != ''">
+                c_grade = #{cGrade},
+            </if>
+            <if test="cLever != null and cLever != ''">
+                c_lever = #{cLever},
+            </if>
+            <if test="cProve != null and cProve != ''">
+                c_prove = #{cProve},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from project.contest where id = #{id}
+    </delete>
+
+    <!--通过学号查询自己的竞赛-->
+    <select id="queryBySid" resultMap="ContestMap">
+        select * from project.contest
+         where fk_s_id=#{fkSId}
+    </select>
+
+</mapper>
